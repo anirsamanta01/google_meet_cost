@@ -1,6 +1,8 @@
-import {useState} from 'react';
+import { useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
 
-const useLoginScreen = (onLogin) => {
+const useLoginScreen = onLogin => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,10 +14,14 @@ const useLoginScreen = (onLogin) => {
     }
 
     setError('');
-    onLogin?.({email: email.trim()});
+    onLogin?.({ email: email.trim() });
   };
 
-  return {email, error, handleSubmit, password, setEmail, setPassword};
-}
+  const handleSignup = () => {
+    navigation.navigate('signup');
+  };
+
+  return { email, error, handleSignup, handleSubmit, password, setEmail, setPassword };
+};
 
 export default useLoginScreen;

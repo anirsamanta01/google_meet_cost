@@ -2,19 +2,28 @@ import React from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
-  TouchableOpacity,
   SafeAreaView,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import styles from '../assets/styles';
 import colors from '../assets/colors/colors';
-import useLoginScreen from '../hooks/useLoginScreen';
+import useSignupScreen from './../hooks/useSignupScreen';
 
-const LoginScreen = ({onLogin}) => {
-  const {email, error, handleSignup, handleSubmit, password, setEmail, setPassword} = useLoginScreen(onLogin);
-
+const SignupScreen = ({onSignUp}) => {
+  const {
+    handleSubmit,
+    handleLogin,
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    error,
+  } = useSignupScreen(onSignUp);
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -25,12 +34,22 @@ const LoginScreen = ({onLogin}) => {
           <Text style={styles.brandMarkText}>M</Text>
         </View>
         <Text style={styles.eyebrow}>MEETWISE</Text>
-        <Text style={styles.title}>Meetings that make sense.</Text>
+        <Text style={styles.title}>Make every meeting count.</Text>
         <Text style={styles.subtitle}>
-          Understand the people cost behind every conversation.
+          Create your account to understand the people cost behind every
+          conversation.
         </Text>
 
         <View style={styles.form}>
+          <Text style={styles.label}>YOUR NAME</Text>
+          <TextInput
+            autoCapitalize="words"
+            onChangeText={setName}
+            placeholder="Alex Morgan"
+            placeholderTextColor={colors.placeholder}
+            style={styles.input}
+            value={name}
+          />
           <Text style={styles.label}>WORK EMAIL</Text>
           <TextInput
             autoCapitalize="none"
@@ -45,9 +64,9 @@ const LoginScreen = ({onLogin}) => {
           <Text style={styles.label}>PASSWORD</Text>
           <TextInput
             autoCapitalize="none"
-            autoComplete="password"
+            autoComplete="new-password"
             onChangeText={setPassword}
-            placeholder="Enter your password"
+            placeholder="Create a password"
             placeholderTextColor={colors.placeholder}
             secureTextEntry
             style={styles.input}
@@ -55,13 +74,10 @@ const LoginScreen = ({onLogin}) => {
           />
           {!!error && <Text style={styles.error}>{error}</Text>}
           <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Sign in</Text>
+            <Text style={styles.buttonText}>Create account</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
-            <Text style={styles.forgot}>Forgot password?</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSignup}>
-            <Text style={styles.forgot}>Create an account</Text>
+          <TouchableOpacity onPress={handleLogin}>
+            <Text style={styles.forgot}>Already have an account? Sign in</Text>
           </TouchableOpacity>
         </View>
 
@@ -71,4 +87,4 @@ const LoginScreen = ({onLogin}) => {
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
