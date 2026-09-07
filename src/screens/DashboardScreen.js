@@ -20,7 +20,7 @@ const upcomingMeetings = [
   },
 ];
 
-const DashboardScreen = ({ userName = 'Anirban' }) => {
+const DashboardScreen = ({ user }) => {
   const { onCreateMeeting, onSelectMeeting, onViewHistory } = useDashboard();
 
   return (
@@ -29,10 +29,10 @@ const DashboardScreen = ({ userName = 'Anirban' }) => {
         <View style={styles.header}>
           <View>
             <Text style={styles.kicker}>TUESDAY, AUGUST 25</Text>
-            <Text style={styles.greeting}>Good morning, {userName}.</Text>
+            <Text style={styles.greeting}>Good morning, {user.name}.</Text>
           </View>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{userName[0]}</Text>
+            <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
           </View>
         </View>
         <View style={styles.costPanel}>

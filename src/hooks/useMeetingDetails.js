@@ -4,7 +4,7 @@ const useMeetingDetails=(onBack, onEdit) => {
   const navigation = useNavigation();
   return {
     handleBack: onBack || (() => navigation.goBack()),
-    handleEdit: onEdit || (() => navigation.navigate('create-meetings')),
+    handleEdit: onEdit || (() => navigation.navigate('create-meeting')),
   };
 }
 

@@ -13,7 +13,14 @@ const ProfileScreen = ({ user, onLogout }) => {
         <Text style={styles.title}>Your profile</Text>
         <View style={styles.profile}>
           <View style={styles.avatar}>
-            <Text style={styles.initials}>AS</Text>
+            <Text style={styles.initials}>
+              {' '}
+              {user.name
+                .split(' ')
+                .map(name => name.charAt(0))
+                .join('')
+                .toUpperCase()}
+            </Text>
           </View>
           <Text style={styles.name}>{user.name}</Text>
           <Text style={styles.email}>{user.email}</Text>

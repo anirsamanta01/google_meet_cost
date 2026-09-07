@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -10,10 +10,10 @@ import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
-const MainTabs = ({user, onLogout}) => {
+const MainTabs = ({ user, onLogout }) => {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         headerShown: false,
 
         tabBarActiveTintColor: '#D85C3A',
@@ -32,7 +32,7 @@ const MainTabs = ({user, onLogout}) => {
           height: 65,
         },
 
-        tabBarIcon: ({color, size}) => {
+        tabBarIcon: ({ color, size }) => {
           let iconName;
 
           if (route.name === 'Home') {
@@ -44,30 +44,23 @@ const MainTabs = ({user, onLogout}) => {
           }
 
           return (
-            <MaterialCommunityIcons
-              name={iconName}
-              size={size}
-              color={color}
-            />
+            <MaterialCommunityIcons name={iconName} size={size} color={color} />
           );
         },
-      })}>
-      <Tab.Screen
+      })}
+    >
+      {/* <Tab.Screen
         name="Home"
         component={DashboardScreen}
-      />
+      /> */}
+      <Tab.Screen name="Home">
+        {props => <DashboardScreen {...props} user={user} />}
+      </Tab.Screen>
 
-      <Tab.Screen
-        name="History"
-        component={MeetingHistoryScreen}
-      />
+      <Tab.Screen name="History" component={MeetingHistoryScreen} />
 
-      <Tab.Screen
-        name="Profile"
-      >
-        {props => (
-          <ProfileScreen {...props} user={user} onLogout={onLogout} />
-        )}
+      <Tab.Screen name="Profile">
+        {props => <ProfileScreen {...props} user={user} onLogout={onLogout} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
