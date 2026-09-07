@@ -62,18 +62,22 @@ const useSignupScreen = () => {
   };
 
   return {
-    handleLogin,
-    handleSubmit,
-    name,
-    setName,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    error,
-    isSubmitting,
-    phone,
-    setPhone,
+    state: {
+      name,
+      setName,
+      email,
+      setEmail,
+      password,
+      setPassword,
+      error,
+      isSubmitting,
+      phone,
+      setPhone,
+    },
+    handlers: {
+      handleLogin,
+      handleSubmit,
+    },
   };
 };
 

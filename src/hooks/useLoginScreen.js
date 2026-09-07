@@ -52,14 +52,18 @@ const useLoginScreen = onAuthenticated => {
   };
 
   return {
-    email,
-    error,
-    handleSignup,
-    handleSubmit,
-    password,
-    setEmail,
-    setPassword,
-    isSubmitting,
+    state: {
+      email,
+      password,
+      error,
+      setEmail,
+      setPassword,
+      isSubmitting,
+    },
+    handlers: {
+      handleSignup,
+      handleSubmit,
+    },
   };
 };
 

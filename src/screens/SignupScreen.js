@@ -14,18 +14,19 @@ import useSignupScreen from './../hooks/useSignupScreen';
 
 const SignupScreen = () => {
   const {
-    handleSubmit,
-    handleLogin,
-    name,
-    setName,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    error,
-    isSubmitting,
-    phone,
-    setPhone
+    state: {
+      name,
+      setName,
+      email,
+      setEmail,
+      password,
+      setPassword,
+      error,
+      isSubmitting,
+      phone,
+      setPhone,
+    },
+    handlers: { handleSubmit, handleLogin },
   } = useSignupScreen();
   return (
     <SafeAreaView style={styles.safeArea}>
