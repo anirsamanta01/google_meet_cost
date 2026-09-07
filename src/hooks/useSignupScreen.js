@@ -1,21 +1,60 @@
 const { useState } = require('react');
-const { useNavigation } = require('@react-navigation/native');
+import { Alert } from 'react-native';
+import API from '../apis/api';
+import { useNavigation } from '@react-navigation/native';
 
-const useSignupScreen = onSignUp => {
+const useSignupScreen = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = () => {
-    if (!name.trim() || !email.trim() || !password) {
-      setError('Enter your name, work email, and password.');
+  const handleSubmit = async () => {
+    if (isSubmitting) {
+      return;
+    }
+
+    if (!name.trim() || !email.trim() || !password || !phone.trim()) {
+      setError('Enter your name, work email, password, and phone number.');
       return;
     }
 
     setError('');
-    onSignUp?.({ email: email.trim(), name: name.trim() });
+    setIsSubmitting(true);
+
+    try {
+      await API.post(
+        '/auth/signup',
+        {
+          name: name.trim(),
+          email: email.trim(),
+          password,
+          phone: phone.trim(),
+        },
+        { timeout: 5000 },
+      );
+
+      setName('');
+      setEmail('');
+      setPassword('');
+      setPhone('');
+      setError('');
+
+      setIsSubmitting(false);
+      Alert.alert('Account created successfully! Please log in.');
+      navigation.navigate('login');
+    } catch (requestError) {
+      const message =
+        requestError.response?.data?.message ||
+        'Unable to create your account. Please try again.';
+      setError(message);
+      Alert.alert('Signup failed', message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleLogin = () => {
@@ -32,6 +71,9 @@ const useSignupScreen = onSignUp => {
     password,
     setPassword,
     error,
+    isSubmitting,
+    phone,
+    setPhone,
   };
 };
 

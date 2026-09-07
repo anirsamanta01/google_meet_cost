@@ -18,7 +18,7 @@ function App() {
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <NavigationContainer>
-       <RootNav />
+        <RootNav />
       </NavigationContainer>
     </SafeAreaProvider>
   );

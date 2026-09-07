@@ -10,7 +10,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
-const MainTabs = () => {
+const MainTabs = ({user, onLogout}) => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -64,8 +64,11 @@ const MainTabs = () => {
 
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
-      />
+      >
+        {props => (
+          <ProfileScreen {...props} user={user} onLogout={onLogout} />
+        )}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };

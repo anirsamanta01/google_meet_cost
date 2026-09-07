@@ -1,10 +1,10 @@
 import React from 'react';
-import {Pressable, SafeAreaView, Text, View} from 'react-native';
+import { Pressable, SafeAreaView, Text, View } from 'react-native';
 import styles from '../assets/styles';
 import useProfile from '../hooks/useProfile';
 
-const ProfileScreen = ({ user = { name: 'Anirban S', email: 'anirban@company.com' }, onLogout }) => {
-  const {handleLogout} = useProfile(onLogout);
+const ProfileScreen = ({ user, onLogout }) => {
+  const { handleLogout } = useProfile(onLogout);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -41,6 +41,6 @@ const ProfileScreen = ({ user = { name: 'Anirban S', email: 'anirban@company.com
       </View>
     </SafeAreaView>
   );
-}
+};
 
 export default ProfileScreen;

@@ -7,16 +7,19 @@ import MeetingDetailsScreen from '../screens/MeetingDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
-const MainStack = () => {
+const MainStack = ({user, onLogout}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="main-tabs"
-        component={MainTabs}
         options={{ headerShown: false }}
-      />
+      >
+        {props => (
+          <MainTabs {...props} user={user} onLogout={onLogout} />
+        )}
+      </Stack.Screen>
       <Stack.Screen
-        name="create-meetings"
+        name="create-meeting"
         component={CreateMeetingScreen}
         options={{ headerShown: false }}
       />

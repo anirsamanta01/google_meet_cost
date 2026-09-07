@@ -4,7 +4,7 @@ const useDashboard = () => {
   const navigation = useNavigation();
 
   const onCreateMeeting = () => {
-    navigation.navigate('create-meetings');
+    navigation.navigate('create-meeting');
   };
 
   const onSelectMeeting = meeting => {

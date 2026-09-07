@@ -12,8 +12,8 @@ import styles from '../assets/styles';
 import colors from '../assets/colors/colors';
 import useLoginScreen from '../hooks/useLoginScreen';
 
-const LoginScreen = ({onLogin}) => {
-  const {email, error, handleSignup, handleSubmit, password, setEmail, setPassword} = useLoginScreen(onLogin);
+const LoginScreen = ({onAuthenticated}) => {
+  const {email, error, handleSignup, handleSubmit, password, setEmail, setPassword, isSubmitting} = useLoginScreen(onAuthenticated);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -55,7 +55,7 @@ const LoginScreen = ({onLogin}) => {
           />
           {!!error && <Text style={styles.error}>{error}</Text>}
           <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Sign in</Text>
+            <Text style={styles.buttonText}> {isSubmitting ? 'Signing in...' : 'Sign in'}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {}}>
             <Text style={styles.forgot}>Forgot password?</Text>

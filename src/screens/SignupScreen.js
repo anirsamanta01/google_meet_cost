@@ -12,7 +12,7 @@ import styles from '../assets/styles';
 import colors from '../assets/colors/colors';
 import useSignupScreen from './../hooks/useSignupScreen';
 
-const SignupScreen = ({onSignUp}) => {
+const SignupScreen = () => {
   const {
     handleSubmit,
     handleLogin,
@@ -23,7 +23,10 @@ const SignupScreen = ({onSignUp}) => {
     password,
     setPassword,
     error,
-  } = useSignupScreen(onSignUp);
+    isSubmitting,
+    phone,
+    setPhone
+  } = useSignupScreen();
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -45,7 +48,7 @@ const SignupScreen = ({onSignUp}) => {
           <TextInput
             autoCapitalize="words"
             onChangeText={setName}
-            placeholder="Alex Morgan"
+            placeholder="Enter your name"
             placeholderTextColor={colors.placeholder}
             style={styles.input}
             value={name}
@@ -61,6 +64,18 @@ const SignupScreen = ({onSignUp}) => {
             style={styles.input}
             value={email}
           />
+          <Text style={styles.label}>PHONE NUMBER</Text>
+          <TextInput
+            autoCapitalize="none"
+            autoComplete="tel"
+            keyboardType="phone-pad"
+            onChangeText={setPhone}
+            placeholder="123-456-7890"
+            placeholderTextColor={colors.placeholder}
+            style={styles.input}
+            value={phone}
+          />
+
           <Text style={styles.label}>PASSWORD</Text>
           <TextInput
             autoCapitalize="none"
@@ -73,8 +88,14 @@ const SignupScreen = ({onSignUp}) => {
             value={password}
           />
           {!!error && <Text style={styles.error}>{error}</Text>}
-          <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>Create account</Text>
+          <TouchableOpacity
+            disabled={isSubmitting}
+            onPress={handleSubmit}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>
+              {isSubmitting ? 'Creating account...' : 'Create account'}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleLogin}>
             <Text style={styles.forgot}>Already have an account? Sign in</Text>
