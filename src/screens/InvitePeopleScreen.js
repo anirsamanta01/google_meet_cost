@@ -4,12 +4,12 @@ import {
   SafeAreaView,
   ScrollView,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import styles from '../assets/styles';
-import colors from '../assets/colors/colors';
 import useInvitePeople from '../hooks/useInvitePeople';
+import SearchInput from '../components/SearchInput';
+import PrimaryButton from '../components/PrimaryButton';
 
 const InvitePeopleScreen = ({ meeting, onContinue }) => {
   const {
@@ -33,13 +33,7 @@ const InvitePeopleScreen = ({ meeting, onContinue }) => {
         <Text style={styles.subtitle}>
           Select everyone who should be in the room.
         </Text>
-        <TextInput
-          onChangeText={setQuery}
-          placeholder="Search people"
-          placeholderTextColor={colors.placeholder}
-          style={styles.search}
-          value={query}
-        />
+        <SearchInput onChangeText={setQuery} placeholder="Search people" value={query} />
         {filtered.map(person => {
           const isSelected = selected.includes(person.id);
           return (
@@ -61,11 +55,7 @@ const InvitePeopleScreen = ({ meeting, onContinue }) => {
             </Pressable>
           );
         })}
-        <Pressable onPress={handleContinue} style={styles.button}>
-          <Text style={styles.buttonText}>
-            Review meeting ({selected.length})
-          </Text>
-        </Pressable>
+        <PrimaryButton onPress={handleContinue} title={`Review meeting (${selected.length})`} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -2,6 +2,8 @@ import React from 'react';
 import { Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
 import useDashboard from '../hooks/useDashboard';
 import styles from '../assets/styles';
+import ProfileAvatar from '../components/ProfileAvatar';
+import PrimaryButton from '../components/PrimaryButton';
 
 const upcomingMeetings = [
   {
@@ -27,13 +29,18 @@ const DashboardScreen = ({ user }) => {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <View>
+          <View style={styles.headerText}>
             <Text style={styles.kicker}>TUESDAY, AUGUST 25</Text>
-            <Text style={styles.greeting}>Good morning, {user.name}.</Text>
+            <Text
+              adjustsFontSizeToFit
+              minimumFontScale={0.8}
+              numberOfLines={2}
+              style={styles.greeting}
+            >
+              Good morning, {user?.name ?? 'there'}.
+            </Text>
           </View>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
-          </View>
+          <ProfileAvatar name={user?.name ?? 'User'} />
         </View>
         <View style={styles.costPanel}>
           <Text style={styles.panelLabel}>TODAY'S MEETING COST</Text>
@@ -63,9 +70,12 @@ const DashboardScreen = ({ user }) => {
             <Text style={styles.meetingCost}>{meeting.cost}</Text>
           </Pressable>
         ))}
-        <Pressable onPress={onCreateMeeting} style={styles.primaryButton}>
-          <Text style={styles.primaryText}>+ Create a meeting</Text>
-        </Pressable>
+        <PrimaryButton
+          onPress={onCreateMeeting}
+          style={styles.primaryButton}
+          textStyle={styles.primaryText}
+          title="+ Create a meeting"
+        />
       </ScrollView>
     </SafeAreaView>
   );

@@ -4,12 +4,12 @@ import {
   SafeAreaView,
   ScrollView,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import styles from '../assets/styles';
-import colors from '../assets/colors/colors';
 import useCreateMeeting from '../hooks/useCreateMeeting';
+import FormInput from '../components/FormInput';
+import PrimaryButton from '../components/PrimaryButton';
 
 const CreateMeetingScreen = ({ onContinue }) => {
   const {
@@ -36,28 +36,24 @@ const CreateMeetingScreen = ({ onContinue }) => {
         <Text style={styles.subtitle}>
           Add the basics, then invite the right people.
         </Text>
-        <Text style={styles.label}>MEETING NAME</Text>
-        <TextInput
+        <FormInput
+          label="MEETING NAME"
           onChangeText={setTitle}
           placeholder="e.g. Weekly product sync"
-          placeholderTextColor={colors.placeholder}
-          style={styles.input}
           value={title}
         />
         <View style={styles.row}>
           <View style={styles.half}>
-            <Text style={styles.label}>DATE</Text>
-            <TextInput
+            <FormInput
+              label="DATE"
               onChangeText={setDate}
-              style={styles.input}
               value={date}
             />
           </View>
           <View style={styles.half}>
-            <Text style={styles.label}>TIME</Text>
-            <TextInput
+            <FormInput
+              label="TIME"
               onChangeText={setTime}
-              style={styles.input}
               value={time}
             />
           </View>
@@ -81,9 +77,7 @@ const CreateMeetingScreen = ({ onContinue }) => {
             </Pressable>
           ))}
         </View>
-        <Pressable onPress={handleContinue} style={styles.button}>
-          <Text style={styles.buttonText}>Invite people</Text>
-        </Pressable>
+        <PrimaryButton onPress={handleContinue} title="Invite people" />
       </ScrollView>
     </SafeAreaView>
   );

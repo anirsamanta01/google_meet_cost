@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import styles from '../assets/styles';
 import useMeetingDetails from '../hooks/useMeetingDetails';
+import PrimaryButton from '../components/PrimaryButton';
 
 function MeetingDetailsScreen({
   meeting = {},
@@ -58,9 +59,7 @@ function MeetingDetailsScreen({
             </Text>
           </View>
         ))}
-        <Pressable onPress={handleEdit} style={styles.button}>
-          <Text style={styles.buttonText}>Edit meeting</Text>
-        </Pressable>
+        <PrimaryButton onPress={handleEdit} title="Edit meeting" />
       </ScrollView>
     </SafeAreaView>
   );

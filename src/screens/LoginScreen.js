@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import styles from '../assets/styles';
-import colors from '../assets/colors/colors';
 import useLoginScreen from '../hooks/useLoginScreen';
+import FormInput from '../components/FormInput';
+import PrimaryButton from '../components/PrimaryButton';
 
 const LoginScreen = ({ onAuthenticated }) => {
   const {
@@ -34,35 +34,24 @@ const LoginScreen = ({ onAuthenticated }) => {
         </Text>
 
         <View style={styles.form}>
-          <Text style={styles.label}>WORK EMAIL</Text>
-          <TextInput
-            autoCapitalize="none"
+          <FormInput
             autoComplete="email"
             keyboardType="email-address"
+            label="WORK EMAIL"
             onChangeText={setEmail}
             placeholder="you@company.com"
-            placeholderTextColor={colors.placeholder}
-            style={styles.input}
             value={email}
           />
-          <Text style={styles.label}>PASSWORD</Text>
-          <TextInput
-            autoCapitalize="none"
+          <FormInput
             autoComplete="password"
+            label="PASSWORD"
             onChangeText={setPassword}
             placeholder="Enter your password"
-            placeholderTextColor={colors.placeholder}
             secureTextEntry
-            style={styles.input}
             value={password}
           />
           {!!error && <Text style={styles.error}>{error}</Text>}
-          <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.buttonText}>
-              {' '}
-              {isSubmitting ? 'Signing in...' : 'Sign in'}
-            </Text>
-          </TouchableOpacity>
+          <PrimaryButton onPress={handleSubmit} title={isSubmitting ? 'Signing in...' : 'Sign in'} />
           <TouchableOpacity onPress={() => {}}>
             <Text style={styles.forgot}>Forgot password?</Text>
           </TouchableOpacity>

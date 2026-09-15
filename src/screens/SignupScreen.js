@@ -4,13 +4,13 @@ import {
   Platform,
   SafeAreaView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import styles from '../assets/styles';
-import colors from '../assets/colors/colors';
 import useSignupScreen from './../hooks/useSignupScreen';
+import FormInput from '../components/FormInput';
+import PrimaryButton from '../components/PrimaryButton';
 
 const SignupScreen = () => {
   const {
@@ -45,59 +45,43 @@ const SignupScreen = () => {
         </Text>
 
         <View style={styles.form}>
-          <Text style={styles.label}>YOUR NAME</Text>
-          <TextInput
+          <FormInput
             autoCapitalize="words"
+            label="YOUR NAME"
             onChangeText={setName}
             placeholder="Enter your name"
-            placeholderTextColor={colors.placeholder}
-            style={styles.input}
             value={name}
           />
-          <Text style={styles.label}>WORK EMAIL</Text>
-          <TextInput
-            autoCapitalize="none"
+          <FormInput
             autoComplete="email"
             keyboardType="email-address"
+            label="WORK EMAIL"
             onChangeText={setEmail}
             placeholder="you@company.com"
-            placeholderTextColor={colors.placeholder}
-            style={styles.input}
             value={email}
           />
-          <Text style={styles.label}>PHONE NUMBER</Text>
-          <TextInput
-            autoCapitalize="none"
+          <FormInput
             autoComplete="tel"
             keyboardType="phone-pad"
+            label="PHONE NUMBER"
             onChangeText={setPhone}
             placeholder="123-456-7890"
-            placeholderTextColor={colors.placeholder}
-            style={styles.input}
             value={phone}
           />
-
-          <Text style={styles.label}>PASSWORD</Text>
-          <TextInput
-            autoCapitalize="none"
+          <FormInput
             autoComplete="new-password"
+            label="PASSWORD"
             onChangeText={setPassword}
             placeholder="Create a password"
-            placeholderTextColor={colors.placeholder}
             secureTextEntry
-            style={styles.input}
             value={password}
           />
           {!!error && <Text style={styles.error}>{error}</Text>}
-          <TouchableOpacity
+          <PrimaryButton
             disabled={isSubmitting}
             onPress={handleSubmit}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>
-              {isSubmitting ? 'Creating account...' : 'Create account'}
-            </Text>
-          </TouchableOpacity>
+            title={isSubmitting ? 'Creating account...' : 'Create account'}
+          />
           <TouchableOpacity onPress={handleLogin}>
             <Text style={styles.forgot}>Already have an account? Sign in</Text>
           </TouchableOpacity>
