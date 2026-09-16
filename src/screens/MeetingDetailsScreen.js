@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Pressable,
   SafeAreaView,
   ScrollView,
   Text,
@@ -9,54 +8,42 @@ import {
 import styles from '../assets/styles';
 import useMeetingDetails from '../hooks/useMeetingDetails';
 import PrimaryButton from '../components/PrimaryButton';
+import ProfileAvatar from '../components/ProfileAvatar';
+import ScreenHeader from '../components/ScreenHeader';
 
-function MeetingDetailsScreen({
-  meeting = {},
-  attendees = ['Maya Chen', 'Jordan Lee', 'Sam Rivera'],
-  onBack,
-  onEdit,
-}) {
+function MeetingDetailsScreen({route, onBack, onEdit}) {
+  const meeting = route?.params?.meeting || {};
+  const attendees = Array.isArray(meeting.attendees) ? meeting.attendees : [];
   const {handleBack, handleEdit} = useMeetingDetails(onBack, onEdit);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable onPress={handleBack}>
-          <Text style={styles.back}>Back</Text>
-        </Pressable>
-        <Text style={styles.kicker}>MEETING DETAILS</Text>
-        <Text style={styles.title}>{meeting.title || 'Product planning'}</Text>
+        <ScreenHeader
+          kicker="MEETING DETAILS"
+          onBack={handleBack}
+          title={meeting.title || 'Meeting details'}
+        />
         <Text style={styles.date}>
-          {meeting.date || 'Tuesday, August 25, 2026'} |{' '}
-          {meeting.time || '09:30 AM'}
+          {meeting.date || 'Date not available'} | {meeting.time || 'Time not available'}
         </Text>
         <View style={styles.costCard}>
           <Text style={styles.label}>ESTIMATED PEOPLE COST</Text>
-          <Text style={styles.cost}>{meeting.cost || '$184'}</Text>
+          <Text style={styles.cost}>{meeting.cost || '$0'}</Text>
           <Text style={styles.note}>
-            Based on attendee roles and {meeting.duration || '45 minutes'}.
+            Based on attendee roles and {meeting.duration || 'duration not available'}.
           </Text>
         </View>
         <Text style={styles.sectionTitle}>Attendees ({attendees.length})</Text>
         {attendees.map((name, index) => (
           <View key={name} style={styles.attendee}>
-            <View
-              style={[
-                styles.avatar,
-                index % 2 ? styles.avatarWarm : styles.avatarCool,
-              ]}
-            >
-              <Text style={styles.initials}>
-                {name
-                  .split(' ')
-                  .map(part => part[0])
-                  .join('')}
-              </Text>
-            </View>
+            <ProfileAvatar
+              backgroundColor={index % 2 ? undefined : styles.avatarCool.backgroundColor}
+              name={name}
+              size={40}
+              style={index % 2 ? styles.avatarWarm : undefined}
+            />
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.attendeeCost}>
-              {index === 0 ? '$52/hr' : '$38/hr'}
-            </Text>
           </View>
         ))}
         <PrimaryButton onPress={handleEdit} title="Edit meeting" />

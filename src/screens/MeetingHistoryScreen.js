@@ -8,61 +8,55 @@ import {
 } from 'react-native';
 import styles from '../assets/styles';
 import useMeetingHistory from '../hooks/useMeetingHistory';
-
-const meetings = [
-  {
-    title: 'Quarterly review',
-    date: 'Aug 22, 2026',
-    attendees: 8,
-    cost: '$312',
-  },
-  { title: 'Hiring sync', date: 'Aug 20, 2026', attendees: 5, cost: '$145' },
-  {
-    title: 'Customer research',
-    date: 'Aug 18, 2026',
-    attendees: 3,
-    cost: '$78',
-  },
-  {
-    title: 'Product planning',
-    date: 'Aug 15, 2026',
-    attendees: 6,
-    cost: '$184',
-  },
-];
+import ScreenHeader from '../components/ScreenHeader';
 
 function MeetingHistoryScreen({ onBack, onSelectMeeting }) {
-  const {handleSelectMeeting} = useMeetingHistory(onSelectMeeting);
+  const { error, handleSelectMeeting, loading, meetings } =
+    useMeetingHistory(onSelectMeeting);
+
+  const totalCost = meetings.reduce((sum, meeting) => {
+    const value = Number(String(meeting.cost || '$0').replace(/[^\d.]/g, '')) || 0;
+    return sum + value;
+  }, 0);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.kicker}>YOUR ACTIVITY</Text>
-        <Text style={styles.title}>Meeting history</Text>
-        <Text style={styles.subtitle}>
-          A clear view of where your team's time goes.
-        </Text>
+        <ScreenHeader
+          kicker="YOUR ACTIVITY"
+          onBack={onBack}
+          subtitle="A clear view of where your team's time goes."
+          title="Meeting history"
+        />
         <View style={styles.summary}>
           <View>
             <Text style={styles.summaryLabel}>THIS MONTH</Text>
-            <Text style={styles.summaryValue}>$1,840</Text>
+            <Text style={styles.summaryValue}>${totalCost.toFixed(2)}</Text>
           </View>
           <View>
             <Text style={styles.summaryLabel}>MEETINGS</Text>
-            <Text style={styles.summaryValue}>18</Text>
+            <Text style={styles.summaryValue}>{meetings.length}</Text>
           </View>
         </View>
-        <Text style={styles.sectionTitle}>August 2026</Text>
-        {meetings.map(meeting => (
+
+        <Text style={styles.sectionTitle}>Recent meetings</Text>
+
+        {loading && <Text style={styles.meta}>Loading meetings...</Text>}
+        {!loading && error ? <Text style={styles.error}>{error}</Text> : null}
+        {!loading && !error && meetings.length === 0 ? (
+          <Text style={styles.meta}>No meetings found yet.</Text>
+        ) : null}
+
+        {!loading && !error && meetings.map(meeting => (
           <Pressable
-            key={meeting.title}
+            key={meeting.id || meeting.title}
             onPress={() => handleSelectMeeting(meeting)}
             style={styles.item}
           >
             <View style={styles.itemBody}>
               <Text style={styles.itemTitle}>{meeting.title}</Text>
               <Text style={styles.meta}>
-                {meeting.date} | {meeting.attendees} attendees
+                {meeting.date} | {meeting.peopleCount || meeting.attendees?.length || 0} attendees
               </Text>
             </View>
             <Text style={styles.cost}>{meeting.cost}</Text>

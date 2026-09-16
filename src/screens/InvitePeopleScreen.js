@@ -10,12 +10,17 @@ import styles from '../assets/styles';
 import useInvitePeople from '../hooks/useInvitePeople';
 import SearchInput from '../components/SearchInput';
 import PrimaryButton from '../components/PrimaryButton';
+import ProfileAvatar from '../components/ProfileAvatar';
+import ScreenHeader from '../components/ScreenHeader';
 
-const InvitePeopleScreen = ({ meeting, onContinue }) => {
+const InvitePeopleScreen = ({route, onContinue}) => {
+  const meeting = route?.params?.meeting;
   const {
+    error,
     filtered,
     handleBack,
     handleContinue,
+    isSubmitting,
     query,
     selected,
     setQuery,
@@ -25,14 +30,12 @@ const InvitePeopleScreen = ({ meeting, onContinue }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable onPress={handleBack}>
-          <Text style={styles.back}>Back</Text>
-        </Pressable>
-        <Text style={styles.kicker}>INVITE PEOPLE</Text>
-        <Text style={styles.title}>{meeting?.title || 'Your meeting'}</Text>
-        <Text style={styles.subtitle}>
-          Select everyone who should be in the room.
-        </Text>
+        <ScreenHeader
+          kicker="INVITE PEOPLE"
+          onBack={handleBack}
+          subtitle="Select everyone who should be in the room."
+          title={meeting?.title || 'Your meeting'}
+        />
         <SearchInput onChangeText={setQuery} placeholder="Search people" value={query} />
         {filtered.map(person => {
           const isSelected = selected.includes(person.id);
@@ -42,9 +45,7 @@ const InvitePeopleScreen = ({ meeting, onContinue }) => {
               onPress={() => toggle(person.id)}
               style={styles.person}
             >
-              <View style={styles.avatar}>
-                <Text style={styles.initials}>{person.initials}</Text>
-              </View>
+              <ProfileAvatar name={person.name} size={40} />
               <View style={styles.personInfo}>
                 <Text style={styles.name}>{person.name}</Text>
                 <Text style={styles.role}>{person.role}</Text>
@@ -55,7 +56,12 @@ const InvitePeopleScreen = ({ meeting, onContinue }) => {
             </Pressable>
           );
         })}
-        <PrimaryButton onPress={handleContinue} title={`Review meeting (${selected.length})`} />
+        {!!error && <Text style={styles.error}>{error}</Text>}
+        <PrimaryButton
+          disabled={isSubmitting}
+          onPress={handleContinue}
+          title={isSubmitting ? 'Saving meeting...' : `Save meeting (${selected.length})`}
+        />
       </ScrollView>
     </SafeAreaView>
   );

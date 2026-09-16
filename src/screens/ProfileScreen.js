@@ -2,6 +2,8 @@ import React from 'react';
 import { Pressable, SafeAreaView, Text, View } from 'react-native';
 import styles from '../assets/styles';
 import useProfile from '../hooks/useProfile';
+import ProfileAvatar from '../components/ProfileAvatar';
+import ScreenHeader from '../components/ScreenHeader';
 
 const ProfileScreen = ({ user, onLogout }) => {
   const { handleLogout } = useProfile(onLogout);
@@ -9,19 +11,9 @@ const ProfileScreen = ({ user, onLogout }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.content}>
-        <Text style={styles.kicker}>ACCOUNT</Text>
-        <Text style={styles.title}>Your profile</Text>
+        <ScreenHeader kicker="ACCOUNT" title="Your profile" />
         <View style={styles.profile}>
-          <View style={styles.avatar}>
-            <Text style={styles.initials}>
-              {' '}
-              {user.name
-                .split(' ')
-                .map(name => name.charAt(0))
-                .join('')
-                .toUpperCase()}
-            </Text>
-          </View>
+          <ProfileAvatar name={user?.name} />
           <Text style={styles.name}>{user.name}</Text>
           <Text style={styles.email}>{user.email}</Text>
         </View>

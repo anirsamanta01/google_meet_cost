@@ -34,7 +34,7 @@ const useLoginScreen = onAuthenticated => {
       setEmail('');
       setPassword('');
       Alert.alert(data.message || 'Login successful!');
-      await onAuthenticated?.(data.user || data);
+      await onAuthenticated?.(data);
     } catch (requestError) {
       const message =
         requestError.response?.data?.message ||

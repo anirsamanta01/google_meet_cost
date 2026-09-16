@@ -4,6 +4,7 @@ import useDashboard from '../hooks/useDashboard';
 import styles from '../assets/styles';
 import ProfileAvatar from '../components/ProfileAvatar';
 import PrimaryButton from '../components/PrimaryButton';
+import ScreenHeader from '../components/ScreenHeader';
 
 const upcomingMeetings = [
   {
@@ -30,15 +31,11 @@ const DashboardScreen = ({ user }) => {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <View style={styles.headerText}>
-            <Text style={styles.kicker}>TUESDAY, AUGUST 25</Text>
-            <Text
-              adjustsFontSizeToFit
-              minimumFontScale={0.8}
-              numberOfLines={2}
-              style={styles.greeting}
-            >
-              Good morning, {user?.name ?? 'there'}.
-            </Text>
+            <ScreenHeader
+              kicker="TUESDAY, AUGUST 25"
+              title={`Good morning, ${user?.name ?? 'there'}.`}
+              titleStyle={styles.greeting}
+            />
           </View>
           <ProfileAvatar name={user?.name ?? 'User'} />
         </View>

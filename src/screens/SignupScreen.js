@@ -11,6 +11,7 @@ import styles from '../assets/styles';
 import useSignupScreen from './../hooks/useSignupScreen';
 import FormInput from '../components/FormInput';
 import PrimaryButton from '../components/PrimaryButton';
+import ScreenHeader from '../components/ScreenHeader';
 
 const SignupScreen = () => {
   const {
@@ -37,12 +38,12 @@ const SignupScreen = () => {
         <View style={styles.brandMark}>
           <Text style={styles.brandMarkText}>M</Text>
         </View>
-        <Text style={styles.eyebrow}>MEETWISE</Text>
-        <Text style={styles.title}>Make every meeting count.</Text>
-        <Text style={styles.subtitle}>
-          Create your account to understand the people cost behind every
-          conversation.
-        </Text>
+        <ScreenHeader
+          kicker="MEETWISE"
+          kickerStyle={styles.eyebrow}
+          subtitle="Create your account to understand the people cost behind every conversation."
+          title="Make every meeting count."
+        />
 
         <View style={styles.form}>
           <FormInput
