@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 14,
   },
+  inputText: {color: colors.ink, fontSize: 16},
   search: {
     backgroundColor: colors.surface,
     borderColor: colors.border,
