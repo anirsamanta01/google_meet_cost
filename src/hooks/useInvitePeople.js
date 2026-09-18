@@ -47,7 +47,9 @@ const useInvitePeople = (meeting, onContinue) => {
       return;
     }
 
-    const selectedPeople = employees.filter(person => selected.includes(person.id));
+    const selectedPeople = employees.filter(person =>
+      selected.includes(person.id),
+    );
     const attendeeNames = selectedPeople.map(person => person.name);
     const finalMeeting = {
       ...(meeting || {}),
@@ -60,7 +62,7 @@ const useInvitePeople = (meeting, onContinue) => {
     setIsSubmitting(true);
 
     try {
-      const {data} = await API.post('/meetings/create-meeting', finalMeeting);
+      const { data } = await API.post('/meetings/create-meeting', finalMeeting);
       const savedMeeting = data.meeting || finalMeeting;
 
       if (onContinue) {
@@ -68,7 +70,7 @@ const useInvitePeople = (meeting, onContinue) => {
         return;
       }
 
-      navigation.navigate('meeting-details', {meeting: savedMeeting});
+      navigation.navigate('meeting-details', { meeting: savedMeeting });
     } catch (requestError) {
       setError(
         requestError.response?.data?.message ||
@@ -80,15 +82,19 @@ const useInvitePeople = (meeting, onContinue) => {
   };
 
   return {
-    filtered,
-    error,
-    handleBack,
-    handleContinue,
-    isSubmitting,
-    query,
-    selected,
-    setQuery,
-    toggle,
+    state: {
+      filtered,
+      error,
+      isSubmitting,
+      query,
+      selected,
+      setQuery,
+    },
+    handlers: {
+      handleBack,
+      handleContinue,
+      toggle,
+    },
   };
 };
 

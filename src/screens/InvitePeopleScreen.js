@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
 import styles from '../assets/styles';
 import useInvitePeople from '../hooks/useInvitePeople';
 import SearchInput from '../components/SearchInput';
@@ -13,18 +7,11 @@ import PrimaryButton from '../components/PrimaryButton';
 import ProfileAvatar from '../components/ProfileAvatar';
 import ScreenHeader from '../components/ScreenHeader';
 
-const InvitePeopleScreen = ({route, onContinue}) => {
+const InvitePeopleScreen = ({ route, onContinue }) => {
   const meeting = route?.params?.meeting;
   const {
-    error,
-    filtered,
-    handleBack,
-    handleContinue,
-    isSubmitting,
-    query,
-    selected,
-    setQuery,
-    toggle,
+    state: { error, filtered, isSubmitting, query, selected, setQuery },
+    handlers: { handleBack, handleContinue, toggle },
   } = useInvitePeople(meeting, onContinue);
 
   return (
@@ -36,7 +23,11 @@ const InvitePeopleScreen = ({route, onContinue}) => {
           subtitle="Select everyone who should be in the room."
           title={meeting?.title || 'Your meeting'}
         />
-        <SearchInput onChangeText={setQuery} placeholder="Search people" value={query} />
+        <SearchInput
+          onChangeText={setQuery}
+          placeholder="Search people"
+          value={query}
+        />
         {filtered.map(person => {
           const isSelected = selected.includes(person.id);
           return (
@@ -60,7 +51,11 @@ const InvitePeopleScreen = ({route, onContinue}) => {
         <PrimaryButton
           disabled={isSubmitting}
           onPress={handleContinue}
-          title={isSubmitting ? 'Saving meeting...' : `Save meeting (${selected.length})`}
+          title={
+            isSubmitting
+              ? 'Saving meeting...'
+              : `Save meeting (${selected.length})`
+          }
         />
       </ScrollView>
     </SafeAreaView>
