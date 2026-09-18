@@ -12,9 +12,17 @@ import ProfileAvatar from '../components/ProfileAvatar';
 import ScreenHeader from '../components/ScreenHeader';
 
 function MeetingDetailsScreen({route, onBack, onEdit}) {
-  const meeting = route?.params?.meeting || {};
-  const attendees = Array.isArray(meeting.attendees) ? meeting.attendees : [];
-  const {handleBack, handleEdit} = useMeetingDetails(onBack, onEdit);
+  const selectedMeeting = route?.params?.meeting || {};
+  const {error, handleBack, handleEdit, loading, meeting} = useMeetingDetails(
+    selectedMeeting.id,
+    selectedMeeting,
+    onBack,
+    onEdit,
+  );
+  const currentMeeting = meeting || {};
+  const attendees = Array.isArray(currentMeeting.attendees)
+    ? currentMeeting.attendees
+    : [];
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -22,18 +30,25 @@ function MeetingDetailsScreen({route, onBack, onEdit}) {
         <ScreenHeader
           kicker="MEETING DETAILS"
           onBack={handleBack}
-          title={meeting.title || 'Meeting details'}
+          title={currentMeeting.title || 'Meeting details'}
         />
+        {loading ? <Text style={styles.meta}>Loading meeting details...</Text> : null}
+        {!loading && error ? <Text style={styles.error}>{error}</Text> : null}
         <Text style={styles.date}>
-          {meeting.date || 'Date not available'} | {meeting.time || 'Time not available'}
+          {currentMeeting.date || 'Date not available'} |{' '}
+          {currentMeeting.time || 'Time not available'}
         </Text>
         <View style={styles.costCard}>
           <Text style={styles.label}>ESTIMATED PEOPLE COST</Text>
-          <Text style={styles.cost}>{meeting.cost || '$0'}</Text>
+          <Text style={styles.cost}>{currentMeeting.cost || '$0'}</Text>
           <Text style={styles.note}>
-            Based on attendee roles and {meeting.duration || 'duration not available'}.
+            Based on attendee roles and{' '}
+            {currentMeeting.duration || 'duration not available'}.
           </Text>
         </View>
+        <Text style={styles.meta}>
+          This meeting is created by {currentMeeting.creator?.name || 'Unknown user'}
+        </Text>
         <Text style={styles.sectionTitle}>Attendees ({attendees.length})</Text>
         {attendees.map((name, index) => (
           <View key={name} style={styles.attendee}>
