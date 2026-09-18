@@ -6,26 +6,58 @@ import ProfileAvatar from '../components/ProfileAvatar';
 import PrimaryButton from '../components/PrimaryButton';
 import ScreenHeader from '../components/ScreenHeader';
 import CostCard from '../components/CostCard';
-
-const upcomingMeetings = [
-  {
-    id: '1',
-    title: 'Product planning',
-    time: '09:30 - 10:15',
-    people: 6,
-    cost: '$184',
-  },
-  {
-    id: '2',
-    title: 'Design critique',
-    time: '13:00 - 13:45',
-    people: 4,
-    cost: '$96',
-  },
-];
+import DeleteMeetingButton from '../components/DeleteMeetingButton';
+import {isUpcomingMeeting, parseMeetingDate} from '../utils/dateUtils';
 
 const DashboardScreen = ({ user }) => {
-  const { onCreateMeeting, onSelectMeeting, onViewHistory } = useDashboard();
+  const {
+    error,
+    loading,
+    meetings,
+    deleteMeeting,
+    onCreateMeeting,
+    onSelectMeeting,
+    onViewHistory,
+  } = useDashboard();
+  const totalCost = meetings.reduce((sum, meeting) => {
+    return sum + (Number(String(meeting.cost || '$0').replace(/[^\d.]/g, '')) || 0);
+  }, 0);
+  const uniqueAttendees = new Set();
+  let legacyPeopleCount = 0;
+
+  meetings.forEach(meeting => {
+    if (Array.isArray(meeting.attendees) && meeting.attendees.length > 0) {
+      meeting.attendees.forEach(attendee => {
+        const attendeeKey =
+          typeof attendee === 'object'
+            ? attendee.id || attendee.email || attendee.name
+            : attendee;
+
+        if (attendeeKey) {
+          uniqueAttendees.add(String(attendeeKey).trim().toLowerCase());
+        }
+      });
+    } else {
+      legacyPeopleCount += Number(meeting.peopleCount || 0);
+    }
+  });
+
+  const totalPeople = uniqueAttendees.size + legacyPeopleCount;
+  const upcomingMeetings = meetings
+    .filter(meeting => isUpcomingMeeting(meeting))
+    .sort((firstMeeting, secondMeeting) => {
+      return (
+        parseMeetingDate(firstMeeting).getTime() -
+        parseMeetingDate(secondMeeting).getTime()
+      );
+    });
+  const currentDate = new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
+    month: 'long',
+    weekday: 'long',
+  })
+    .format(new Date())
+    .toUpperCase();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -33,7 +65,7 @@ const DashboardScreen = ({ user }) => {
         <View style={styles.header}>
           <View style={styles.headerText}>
             <ScreenHeader
-              kicker="TUESDAY, AUGUST 25"
+              kicker={currentDate}
               title={`Good morning, ${user?.name ?? 'there'}.`}
               titleStyle={styles.greeting}
             />
@@ -42,9 +74,9 @@ const DashboardScreen = ({ user }) => {
         </View>
         <CostCard
           variant="dashboard"
-          label="TODAY'S MEETING COST"
-          value="$1010.50"
-          note="12 people across 9 meetings"
+          label="TOTAL MEETING COST"
+          value={`$${totalCost.toFixed(2)}`}
+          note={`${totalPeople} people across ${meetings.length} meetings`}
         />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Coming up</Text>
@@ -52,22 +84,39 @@ const DashboardScreen = ({ user }) => {
             <Text style={styles.link}>View history</Text>
           </Pressable>
         </View>
-        {upcomingMeetings.map(meeting => (
-          <Pressable
-            key={meeting.id}
-            onPress={() => onSelectMeeting(meeting)}
+        {loading && <Text style={styles.meta}>Loading upcoming meetings...</Text>}
+        {!loading && error ? <Text style={styles.error}>{error}</Text> : null}
+        {!loading && !error && upcomingMeetings.length === 0 ? (
+          <Text style={styles.meta}>No upcoming meetings found.</Text>
+        ) : null}
+        {!loading && !error && upcomingMeetings.map(meeting => (
+          <View
+            key={meeting.id || meeting.title}
             style={styles.meeting}
           >
-            <View style={styles.timeColumn}>
-              <Text style={styles.time}>{meeting.time.split(' ')[0]}</Text>
-              <Text style={styles.duration}>45 MIN</Text>
+            <Pressable
+              onPress={() => onSelectMeeting(meeting)}
+              style={styles.meetingContent}
+            >
+              <View style={styles.timeColumn}>
+                <Text style={styles.time}>{meeting.time || 'No time'}</Text>
+                <Text style={styles.duration}>{meeting.duration || 'Meeting'}</Text>
+              </View>
+              <View style={styles.meetingBody}>
+                <Text style={styles.meetingTitle}>{meeting.title}</Text>
+                <Text style={styles.meta}>
+                  {meeting.peopleCount || meeting.attendees?.length || 0} people
+                </Text>
+              </View>
+            </Pressable>
+            <View style={styles.meetingActions}>
+              <Text style={styles.meetingCost}>{meeting.cost || '$0'}</Text>
+              <DeleteMeetingButton
+                meeting={meeting}
+                onDelete={deleteMeeting}
+              />
             </View>
-            <View style={styles.meetingBody}>
-              <Text style={styles.meetingTitle}>{meeting.title}</Text>
-              <Text style={styles.meta}>{meeting.people} people</Text>
-            </View>
-            <Text style={styles.meetingCost}>{meeting.cost}</Text>
-          </Pressable>
+          </View>
         ))}
         <PrimaryButton
           onPress={onCreateMeeting}

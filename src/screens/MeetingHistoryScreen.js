@@ -4,9 +4,10 @@ import styles from '../assets/styles';
 import useMeetingHistory from '../hooks/useMeetingHistory';
 import ScreenHeader from '../components/ScreenHeader';
 import CostCard from '../components/CostCard';
+import DeleteMeetingButton from '../components/DeleteMeetingButton';
 
 function MeetingHistoryScreen({ onBack, onSelectMeeting }) {
-  const { error, handleSelectMeeting, loading, meetings } =
+  const { deleteMeeting, error, handleSelectMeeting, loading, meetings } =
     useMeetingHistory(onSelectMeeting);
 
   const totalCost = meetings.reduce((sum, meeting) => {
@@ -49,21 +50,29 @@ function MeetingHistoryScreen({ onBack, onSelectMeeting }) {
         {!loading &&
           !error &&
           meetings.map(meeting => (
-            <Pressable
+            <View
               key={meeting.id || meeting.title}
-              onPress={() => handleSelectMeeting(meeting)}
               style={styles.item}
             >
-              <View style={styles.itemBody}>
+              <Pressable
+                onPress={() => handleSelectMeeting(meeting)}
+                style={styles.itemBody}
+              >
                 <Text style={styles.itemTitle}>{meeting.title}</Text>
                 <Text style={styles.meta}>
                   {meeting.date} |{' '}
                   {meeting.peopleCount || meeting.attendees?.length || 0}{' '}
                   attendees
                 </Text>
+              </Pressable>
+              <View style={styles.itemActions}>
+                <Text style={styles.cost}>{meeting.cost}</Text>
+                <DeleteMeetingButton
+                  meeting={meeting}
+                  onDelete={deleteMeeting}
+                />
               </View>
-              <Text style={styles.cost}>{meeting.cost}</Text>
-            </Pressable>
+            </View>
           ))}
       </ScrollView>
     </SafeAreaView>

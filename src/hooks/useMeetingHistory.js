@@ -36,7 +36,31 @@ const useMeetingHistory = onSelectMeeting => {
     navigation.navigate('meeting-details', { meeting });
   };
 
-  return { error, fetchMeetings, handleSelectMeeting, loading, meetings };
+  const deleteMeeting = async meetingId => {
+    try {
+      await API.delete(`/meetings/delete-meeting/${meetingId}`);
+      setMeetings(currentMeetings =>
+        currentMeetings.filter(meeting => meeting.id !== meetingId),
+      );
+      setError('');
+      return true;
+    } catch (requestError) {
+      setError(
+        requestError.response?.data?.message ||
+          'Unable to delete the meeting. Please try again.',
+      );
+      return false;
+    }
+  };
+
+  return {
+    deleteMeeting,
+    error,
+    fetchMeetings,
+    handleSelectMeeting,
+    loading,
+    meetings,
+  };
 };
 
 export default useMeetingHistory;

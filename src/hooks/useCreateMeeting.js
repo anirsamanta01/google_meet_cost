@@ -17,7 +17,11 @@ const formatTime = value =>
 const useCreateMeeting = onContinue => {
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
-  const [dateValue, setDateValue] = useState(new Date());
+  const [dateValue, setDateValue] = useState(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  });
   const [timeValue, setTimeValue] = useState(() => {
     const initialTime = new Date();
     initialTime.setHours(9, 30, 0, 0);

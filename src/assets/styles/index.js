@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../colors/colors';
 
 const styles = StyleSheet.create({
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 14,
   },
-  inputText: {color: colors.ink, fontSize: 16},
+  inputText: { color: colors.ink, fontSize: 16 },
   search: {
     backgroundColor: colors.surface,
     borderColor: colors.border,
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     overflow: 'hidden',
     shadowColor: '#000000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,
     shadowRadius: 5,
     width: 52,
@@ -178,6 +178,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 16,
   },
+  meetingContent: { alignItems: 'center', flex: 1, flexDirection: 'row' },
+  meetingActions: { alignItems: 'flex-end', marginLeft: 12 },
   timeColumn: {
     borderRightColor: colors.divider,
     borderRightWidth: 1,
@@ -325,6 +327,29 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   itemBody: { flex: 1 },
+  itemActions: { alignItems: 'flex-end', marginLeft: 12 },
+  deleteButton: {
+    marginTop: 10,
+    padding: 6,
+    borderRadius: 6,
+    borderLeftColor: colors.primary,
+    borderLeftWidth: 4,
+    borderRightColor: colors.primary,
+    borderRightWidth: 4,
+    backgroundColor: colors.surface,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 2,
+  },
+  deleteText: {
+    color: colors.error,
+    fontSize: 10,
+    fontWeight: '700',
+    marginTop: 2,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  },
+  deleteIcon: { color: colors.error },
   itemTitle: { color: colors.ink, fontSize: 15, fontWeight: '700' },
   profile: {
     alignItems: 'center',
