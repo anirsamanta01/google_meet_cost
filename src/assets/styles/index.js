@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   form: { marginTop: 38 },
   label: {
     color: colors.muted,
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '800',
     letterSpacing: 1,
     marginBottom: 8,

@@ -5,6 +5,7 @@ import styles from '../assets/styles';
 import ProfileAvatar from '../components/ProfileAvatar';
 import PrimaryButton from '../components/PrimaryButton';
 import ScreenHeader from '../components/ScreenHeader';
+import CostCard from '../components/CostCard';
 
 const upcomingMeetings = [
   {
@@ -39,11 +40,12 @@ const DashboardScreen = ({ user }) => {
           </View>
           <ProfileAvatar name={user?.name ?? 'User'} />
         </View>
-        <View style={styles.costPanel}>
-          <Text style={styles.panelLabel}>TODAY'S MEETING COST</Text>
-          <Text style={styles.total}>$428.50</Text>
-          <Text style={styles.panelNote}>12 people across 3 meetings</Text>
-        </View>
+        <CostCard
+          variant="dashboard"
+          label="TODAY'S MEETING COST"
+          value="$1010.50"
+          note="12 people across 9 meetings"
+        />
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Coming up</Text>
           <Pressable onPress={onViewHistory}>
