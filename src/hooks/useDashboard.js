@@ -40,6 +40,7 @@ const useDashboard = () => {
     };
   }, []);
 
+  //fetchMeetings whenever the Dashboard screen gets focus.
   useFocusEffect(fetchMeetings);
 
   const onCreateMeeting = () => {
