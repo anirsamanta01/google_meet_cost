@@ -59,6 +59,11 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginTop: 7,
   },
+  backButton: {
+    alignSelf: 'flex-start',
+    // marginBottom: 4,
+    padding: 5,
+  },
   form: { marginTop: 38 },
   label: {
     color: colors.muted,
@@ -313,7 +318,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   summaryValue: {
-    color: colors.lightText,
+    color: colors.primary,
     fontSize: 27,
     fontWeight: '800',
     marginTop: 8,
@@ -325,6 +330,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 9,
     padding: 16,
+    marginTop: 8,
   },
   itemBody: { flex: 1 },
   itemActions: { alignItems: 'flex-end', marginLeft: 12 },
@@ -350,6 +356,14 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   deleteIcon: { color: colors.error },
+  roleButton: {
+    borderColor: colors.border,
+    borderRadius: 8,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  roleButtonText: { color: colors.primary, fontSize: 12, fontWeight: '800' },
   itemTitle: { color: colors.ink, fontSize: 15, fontWeight: '700' },
   profile: {
     alignItems: 'center',
@@ -367,6 +381,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 8,
     padding: 16,
+    marginTop: 8,
   },
   preferenceTitle: { color: colors.ink, fontSize: 15, fontWeight: '700' },
   preferenceNote: { color: colors.muted, fontSize: 12, marginTop: 5 },

@@ -1,14 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import API from '../apis/api';
 
-const employees = [
-  { id: '1', name: 'Maya Chen', role: 'Product', initials: 'MC' },
-  { id: '2', name: 'Jordan Lee', role: 'Engineering', initials: 'JL' },
-  { id: '3', name: 'Sam Rivera', role: 'Design', initials: 'SR' },
-  { id: '4', name: 'Priya Shah', role: 'Operations', initials: 'PS' },
-  { id: '5', name: 'Alex Johnson', role: 'Marketing', initials: 'AJ' },
-];
+const getInitials = name =>
+  String(name || '')
+    .split(' ')
+    .filter(Boolean)
+    .map(part => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
 const getEstimatedCost = count => {
   if (!count) {
@@ -20,17 +21,49 @@ const getEstimatedCost = count => {
 
 const useInvitePeople = (meeting, onContinue) => {
   const navigation = useNavigation();
+  const [employees, setEmployees] = useState([]);
+  const [isLoadingPeople, setIsLoadingPeople] = useState(true);
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState([]);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    let isActive = true;
+    const loadEmployees = async () => {
+      try {
+        setIsLoadingPeople(true);
+        const {data} = await API.get('/meetings/attendees');
+        if (isActive) {
+          setEmployees(
+            (data.users || []).map(user => ({
+              ...user,
+              initials: getInitials(user.name),
+            })),
+          );
+          setError('');
+        }
+      } catch (requestError) {
+        if (isActive) {
+          setError(requestError.response?.data?.message || 'Unable to load people.');
+        }
+      } finally {
+        if (isActive) setIsLoadingPeople(false);
+      }
+    };
+
+    loadEmployees();
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   const filtered = useMemo(
     () =>
       employees.filter(person =>
         person.name.toLowerCase().includes(query.toLowerCase()),
       ),
-    [query],
+    [employees, query],
   );
 
   const toggle = id =>
@@ -85,6 +118,7 @@ const useInvitePeople = (meeting, onContinue) => {
     state: {
       filtered,
       error,
+      isLoadingPeople,
       isSubmitting,
       query,
       selected,

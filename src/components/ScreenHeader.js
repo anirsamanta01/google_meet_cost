@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../assets/styles';
+import colors from '../assets/colors/colors';
 
 const ScreenHeader = ({
   kicker,
@@ -10,13 +12,22 @@ const ScreenHeader = ({
   titleStyle,
   subtitleStyle,
   onBack,
-  backLabel = 'Back',
   children,
 }) => (
   <View>
     {onBack ? (
-      <Pressable onPress={onBack}>
-        <Text style={styles.back}>{backLabel}</Text>
+      <Pressable
+        accessibilityLabel="Go back"
+        accessibilityRole="button"
+        hitSlop={8}
+        onPress={onBack}
+        style={styles.backButton}
+      >
+        <MaterialCommunityIcons
+          color={colors.primary}
+          name="arrow-left"
+          size={26}
+        />
       </Pressable>
     ) : null}
     {kicker ? <Text style={[styles.kicker, kickerStyle]}>{kicker}</Text> : null}

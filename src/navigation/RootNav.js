@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect, useState} from 'react';
 import API, {TOKEN_STORAGE_KEY} from '../apis/api';
 import AuthStack from './AuthStack';
+import AdminStack from './AdminStack';
 import MainStack from './MainStack';
 
 const USER_STORAGE_KEY = '@google_meet_cost_user';
@@ -74,7 +75,11 @@ const RootNav = () => {
   return (
     <>
       {user ? (
-        <MainStack user={user} onLogout={handleLogout} />
+        user.role?.toLowerCase() === 'admin' ? (
+          <AdminStack user={user} onLogout={handleLogout} />
+        ) : (
+          <MainStack user={user} onLogout={handleLogout} />
+        )
       ) : (
         <AuthStack onAuthenticated={handleAuthenticated} />
       )}

@@ -10,7 +10,7 @@ import ScreenHeader from '../components/ScreenHeader';
 const InvitePeopleScreen = ({ route, onContinue }) => {
   const meeting = route?.params?.meeting;
   const {
-    state: { error, filtered, isSubmitting, query, selected, setQuery },
+    state: { error, filtered, isLoadingPeople, isSubmitting, query, selected, setQuery },
     handlers: { handleBack, handleContinue, toggle },
   } = useInvitePeople(meeting, onContinue);
 
@@ -28,6 +28,10 @@ const InvitePeopleScreen = ({ route, onContinue }) => {
           placeholder="Search people"
           value={query}
         />
+        {isLoadingPeople ? <Text style={styles.meta}>Loading people...</Text> : null}
+        {!isLoadingPeople && !error && filtered.length === 0 ? (
+          <Text style={styles.meta}>No people available to invite.</Text>
+        ) : null}
         {filtered.map(person => {
           const isSelected = selected.includes(person.id);
           return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Pressable, Text } from 'react-native';
+import {Alert, Pressable} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../assets/styles';
 
@@ -22,12 +22,11 @@ const DeleteMeetingButton = ({ meeting, onDelete }) => {
       onPress={confirmDelete}
       style={styles.deleteButton}
     >
-      {/* <MaterialCommunityIcons
+      <MaterialCommunityIcons
         name="trash-can-outline"
         size={20}
         color={styles.deleteIcon.color}
-      /> */}
-      <Text style={styles.deleteText}>Delete</Text>
+      />
     </Pressable>
   );
 };
