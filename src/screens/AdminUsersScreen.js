@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import { useState } from 'react';
 import ScreenHeader from '../components/ScreenHeader';
 import styles from '../assets/styles';
 import useAdminUsers from '../hooks/useAdminUsers';
@@ -15,44 +14,17 @@ import FormInput from '../components/FormInput';
 import PrimaryButton from '../components/PrimaryButton';
 
 const AdminUsersScreen = ({ navigation, user }) => {
-  const { createUser, error, loading, updateRole, users } = useAdminUsers(
-    user?.id,
-  );
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [isCreating, setIsCreating] = useState(false);
-
-  const handleCreateUser = async () => {
-    if (!name.trim() || !email.trim() || !phone.trim() || !password) {
-      Alert.alert(
-        'Missing information',
-        'Enter a name, email, phone number, and temporary password.',
-      );
-      return;
-    }
-
-    setIsCreating(true);
-    const wasCreated = await createUser({
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      password,
-    });
-    setIsCreating(false);
-
-    if (wasCreated) {
-      setName('');
-      setEmail('');
-      setPhone('');
-      setPassword('');
-      Alert.alert(
-        'User added',
-        'The user can now sign in with the temporary password.',
-      );
-    }
-  };
+  const {
+    state: {email, error, isCreating, loading, name, password, phone, users},
+    handlers: {
+      handleCreateUser,
+      setEmail,
+      setName,
+      setPassword,
+      setPhone,
+      updateRole,
+    },
+  } = useAdminUsers();
 
   const changeRole = account => {
     const nextRole = account.role === 'admin' ? 'user' : 'admin';

@@ -49,10 +49,6 @@ const MainTabs = ({ user, onLogout }) => {
         },
       })}
     >
-      {/* <Tab.Screen
-        name="Home"
-        component={DashboardScreen}
-      /> */}
       <Tab.Screen name="Home">
         {props => <DashboardScreen {...props} user={user} />}
       </Tab.Screen>
